@@ -2,7 +2,7 @@
 
 Command:
 ```
-python CiLiQuant.py -b test_bsjunctions.txt -bc 8 -fc 5 -j test_junctions.txt -v 11 -e test_exon.bed -o test_output -n RNA001
+python CiLiQuant.py -b ./Example/test_bsjunctions.txt -bc 8 -fc 5 -j ./Example/test_junctions.txt -v 11 -e ./Example/test_exons.bed -o test_output -n RNA001
 ```
 Note that the output directory and prefix can be changed (-o and -n resp.)
 
