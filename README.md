@@ -1,6 +1,7 @@
 # General Information
 
-This code was created by Annelien Morlion. 
+This code was created by Annelien Morlion
+Collaborators: Eva Hulstaert, Jasper Anckaert, Celine Everaert, Jo Vandesompele, Pieter Mestdagh
 
 Feel free to provide feedback/inform about issues.
 
