@@ -1,5 +1,4 @@
 import pandas as pd
-#import numpy as np
 import argparse
 import os
 import sys
@@ -8,10 +7,6 @@ def readjunctions(filename, fw_col, overlap_col):
 	""" Read the (normal) junction file
 	Start and stop position in some mappers reflects the start of the leftmost read and the stop of the rightmost read that contain the junction instead of actual splicing sites (see ifelse)
 	"""
-	#print(fw_col)
-	#print(int(fw_col)-1)
-	#print(list(range(0,6,1))+[int(fw_col)-1])
-	#junctions = pd.read_csv(filename,sep="\t",header=None,usecols=list(range(0,6,1))+[int(fw_col)-1], names=["chromosome","start","stop","name","score","strand", "reads"],dtype={"chromosome":str,"start":float,"stop":float,"name":str,"score":str,"strand":str,"reads":float})
 	junctions = pd.read_csv(filename,sep="\t",header=None,usecols=list(range(0,6,1)), names=["chromosome","start","stop","name","score","strand"],dtype={"chromosome":str,"start":float,"stop":float,"name":str,"score":str,"strand":str})
 	junction_reads = pd.read_csv(filename,sep="\t",header=None,usecols=[int(fw_col)-1], names=["reads"],dtype={"reads":float}) #add read column (can be one of the first 6 columns, e.g. score column in TopHat)
 	junctions = pd.concat([junctions, junction_reads], axis=1) #add read column to junction bed file
@@ -23,17 +18,14 @@ def readjunctions(filename, fw_col, overlap_col):
 	else: #if the exact start and stop site were already in df: just modify start and stop to look at overlap within 5nt of exact start/stop site
 		junctions['start'] = junctions['start']-5 
 		junctions['stop'] = junctions['stop']+5
-	#print(junctions.head())
 	junctions = junctions[(junctions['start']>0) & (junctions['stop']>0)]
 	junctions['start']=junctions['start'].astype('int') #start of junction (or of leftmost read that contains the junction)
 	junctions['stop']=junctions['stop'].astype('int') #stop of junction (or of rightmost read that contains the junction)
 	junctions['reads']=junctions['reads'].astype('int') #number of reads that contain the junction
-	#print(junctions.head())
 	return junctions
 
 def readbacksplice(filename, bs_col):
 	""" Read the backsplice junction file """
-	#nr of reads that contain the junction: in name column following the "/"
 	backsplice_junctions = pd.read_csv(filename,sep="\t",header=None,usecols=list(range(0,6,1)),names=["chromosome","start","stop","name","score","strand"],dtype={"chromosome":str,"start":int,"stop":int,"name":str,"score":str,"strand":str})
 	backsplice_reads = pd.read_csv(filename,sep="\t",header=None,usecols=[int(bs_col)-1], names=["reads"],dtype={"reads":int}) #add read column (can be one of the first 6 columns)
 	backsplice_junctions = pd.concat([backsplice_junctions, backsplice_reads], axis=1) #add read column to backsplice junction bed file
@@ -45,7 +37,6 @@ def readexons(filename):
 	""" Read the exon file """
 	exons = pd.read_csv(filename,sep="\t",header=None,usecols=list(range(0,6,1)), names=['chromosome','start','stop','name','score','strand'],dtype={'chromosome':str,'start':int,'stop':int,'name':str,'score':str,'strand':str})
 	exons['exon_id'] = exons['chromosome'].astype('str') + '_' + exons['start'].astype('str') + '_' + exons['stop'].astype('str') + '_' + exons['strand'].astype('str')
-	#print(exons.head())
 	return (exons)
 
 def label_rflank(row):
@@ -133,15 +124,12 @@ def splitread(junctions, backsplice_junctions, exons):
 	del exons #remove larger exon df
 	
 	unique_genes = exons_filt["name"].unique()
-	#print(unique_genes)
-	#exons["chromosome"]= "chr" + exons["chromosome"]
 	output_df = pd.DataFrame(columns = ['gene_id','circ_id','bs_reads', 'lfl_reads','lfl_junctions','rfl_reads','rfl_junctions','lfl_junctions_ambi','rfl_junctions_ambi'])
 	output_df2 = pd.DataFrame(columns = ['gene_id','linear_reads','linear_junctions','ambiguous_reads','ambiguous_junctions','circ_reads','circ_junctions'])
 	output_exons = pd.DataFrame(columns = ['chromosome','start','stop','name','score','strand','exon_id'])
 	output_fwjunctions = pd.DataFrame(columns = ['chromosome','start','stop','name','score','strand','reads','gene','pos_to_circ'])
 	
 	for gene in unique_genes:
-		#print(gene)
 		DF_per_gene = exons_filt[exons_filt["name"]== gene] #all exons of the gene
 		
 		# Retrieve backsplice junction reads (same chr, start of BS between min start and max stop of all exons of this gene) ###ALSO STRAND?
@@ -174,12 +162,10 @@ def splitread(junctions, backsplice_junctions, exons):
 			# Go over every normal junction & check whether it is ambiguous/linear_only/flanking circles
 			for fw in junctions_gene['name'].unique():
 				fwjunc = junctions_gene[junctions_gene['name'] == fw].copy()
-				#print(fwjunc)
 				inside,outside,unknown,bs_counter = int(0),int(0),int(0),int(0)
 				# Go over all backsplice junctions in the gene and check whether the normal junction falls in between BS sites or is completely outside BS sites
 				for bs in backsplice_junctions_gene['circ_id'].unique():
 					bsjunc = backsplice_junctions_gene[backsplice_junctions_gene['circ_id'] == bs].copy()
-					#print(bsjunc)
 					# if entirely inside circ:
 					if (int(bsjunc['start']) <= int(fwjunc['start']) < int(fwjunc['stop']) <= int(bsjunc['stop'])): #junction lies inside a circRNA
 						inside =1
@@ -192,14 +178,11 @@ def splitread(junctions, backsplice_junctions, exons):
 					else:
 						if (int(fwjunc['stop']) <= int(bsjunc['start'])) | (int(fwjunc['start']) > int(bsjunc['stop'])) | (int(fwjunc['start']) < int(bsjunc['start']) < int(bsjunc['stop']) < int(fwjunc['stop'])): #junction lies entirely before OR entirely after OR partially before+partially after BS -> outside!
 							outside += 1
-							#print("outside")
 						elif (int(fwjunc['start']) < int(bsjunc['start']) < int(fwjunc['stop']) <= int(bsjunc['stop'])) | (int(bsjunc['start']) <= int(fwjunc['start']) < int(bsjunc['stop']) < int(fwjunc['stop'])): #junction flanks circle at one side (left or right)
 							outside += 1
 							junctions_gene.loc[junctions_gene['name'] == fw,'pos_to_circ'] = 'flanking'
-							#print("flank")
 						else:
 							unknown +=1
-							#print("not inside/outside/flanking?")
 					bs_counter +=1 #add 1 to BS junction counter
 					
 				# Count total number of ambigous junctions and sum number of reads 
@@ -211,7 +194,6 @@ def splitread(junctions, backsplice_junctions, exons):
 				elif outside == bs_counter: #if junction lies outside every BS junction, the outside counter will be equal to the BS junction counter
 					linear_junc += 1
 					linear_reads += int(fwjunc['reads'])
-					#junctions_gene[junctions_gene['name'] == fw ]['junction_pos'] ='outside'
 				else:
 					print('problem to assign to ambiguous vs linear')
 					print(junctions_gene)
@@ -223,7 +205,6 @@ def splitread(junctions, backsplice_junctions, exons):
 				lfl_present,rfl_present=0,0			
 				for bs in backsplice_junctions_gene['circ_id'].unique(): #go over all backsplice junctions in the gene and check if normal junction flanks BS (and on which side)
 					bsjunc = backsplice_junctions_gene[backsplice_junctions_gene['circ_id'] == bs]
-					#print(bsjunc)
 					pos = output_df[(output_df['gene_id'] == gene) & (output_df['circ_id'] == bs)].index.values[0] 	#get index of line that contains the specific circle in output_df
 					output_df.loc[pos,'bs_reads'] = int(bsjunc['reads']) 	#fill in the backsplice read counts
 					
@@ -265,13 +246,11 @@ def splitread(junctions, backsplice_junctions, exons):
 			#assign all linear junction counts to linear_junctions in output_df2
 			linear_junc = junctions_gene['name'].count() ##
 			linear_reads = junctions_gene['reads'].sum() ##
-			#print(linear_junc, "FW junctions resulting in sum of reads:",linear_reads)
 		
 		output_fwjunctions = output_fwjunctions.append(junctions_gene, ignore_index = True) #add the position and gene name of every forward junction to new df
 		#print("INTERMEDIATE RES: ambiguous:",ambiguous_junc,"linear:",linear_junc)
 		output_df2 = output_df2.append({'gene_id':gene,'linear_junctions':int(linear_junc),'linear_reads':int(linear_reads),'ambiguous_junctions':int(ambiguous_junc),\
 										'ambiguous_reads':int(ambiguous_reads), 'circ_junctions':int(circ_junc), 'circ_reads':int(circ_reads)},ignore_index=True)
-		#print(output_df2)
 		
 	#if (len(output_df2) > 0): #if the output_df contains at least one gene (otherwise error)
 	output_df2 = output_df2.infer_objects() #infer type of columns
@@ -284,8 +263,6 @@ def splitread(junctions, backsplice_junctions, exons):
 		output_df_ci_flnonfl = nonflankcirclevelfraction(output_df_ci, output_df2_ci) #calculate fraction and ci based on all linear only junction reads
 		output_df_ci_flnonfl["lfl_reads"] = output_df_ci_flnonfl.apply(lambda row: label_lflank(row), axis=1)
 		output_df_ci_flnonfl["rfl_reads"] = output_df_ci_flnonfl.apply(lambda row: label_rflank(row), axis=1)
-	#print(output_df)	
-	#return (output_df, output_df2, output_exons)
 	return (output_df_ci_flnonfl, output_df2_ci, output_fwjunctions)
 
 if __name__ == '__main__':
