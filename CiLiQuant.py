@@ -155,7 +155,6 @@ def splitread(junctions, backsplice_junctions, exons):
 		linear_junc, linear_reads = 0,0
 		circ_junc = backsplice_junctions_gene['circ_id'].count() #count total nr of BS junctions in that gene
 		circ_reads = backsplice_junctions_gene['reads'].sum() #sum up all the BS junction reads in that gene
-		#print(circ_junc, "BS junctions resulting in sum of reads:",circ_reads)
 		
 		# If there are both linear and backsplice junctions:
 		if (len(junctions_gene) > 0) & (len(backsplice_junctions_gene) > 0): 
