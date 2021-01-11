@@ -13,11 +13,11 @@ def readjunctions(filename, fw_col, overlap_col):
 	if overlap_col!="":
 		junctions_overlap = pd.read_csv(filename,sep="\t",header=None,usecols=[int(overlap_col)-1], names=["overlap"],dtype={"overlap":str})
 		junctions_overlap[['overlapleft','overlapright']]=junctions_overlap['overlap'].str.split(',', expand=True)
-		junctions['start'] = junctions['start']+junctions_overlap['overlapleft'].astype('int')-5 #add left overlap to get exact start site of junction, then subtract 5 to look for overlap within 5nt        
-		junctions['stop'] = junctions['stop']-junctions_overlap['overlapright'].astype('int')+5#subtract right overlap to get exact stop site of junction, then add 5 to look for overlap within 5nt   
-	else: #if the exact start and stop site were already in df: just modify start and stop to look at overlap within 5nt of exact start/stop site
-		junctions['start'] = junctions['start']-5 
-		junctions['stop'] = junctions['stop']+5
+		junctions['start'] = junctions['start']+junctions_overlap['overlapleft'].astype('int')-2 #add left overlap to get exact start site of junction, then subtract 2 to look for overlap within 2nt        
+		junctions['stop'] = junctions['stop']-junctions_overlap['overlapright'].astype('int')+2 #subtract right overlap to get exact stop site of junction, then add 2 to look for overlap within 2nt   
+	else: #if the exact start and stop site were already in df: just modify start and stop to look at overlap within 2nt of exact start/stop site (accounts for discrepancies due to annotation or coordinate system)
+		junctions['start'] = junctions['start']-2
+		junctions['stop'] = junctions['stop']+2
 	junctions = junctions[(junctions['start']>0) & (junctions['stop']>0)]
 	junctions['start']=junctions['start'].astype('int') #start of junction (or of leftmost read that contains the junction)
 	junctions['stop']=junctions['stop'].astype('int') #stop of junction (or of rightmost read that contains the junction)
