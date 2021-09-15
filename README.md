@@ -7,7 +7,7 @@ Collaborators: Eva Hulstaert, Jasper Anckaert, Celine Everaert, Jo Vandesompele,
 Feel free to provide feedback/inform about issues
 
 If you use this code, please cite our work:
-xxx
+Morlion, A.; Hulstaert, E.; Anckaert, J.; Everaert, C.; Vandesompele, J.; Mestdagh, P. CiLiQuant: Quantification of RNA Junction Reads Based on Their Circular or Linear Transcript Origin. Preprints 2021, 2021090183 (doi: 10.20944/preprints202109.0183.v1).
 
 # CiLiQuant.py
 
