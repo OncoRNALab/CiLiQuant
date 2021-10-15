@@ -3,7 +3,7 @@
 If you use this code, please cite our [work](https://www.preprints.org/manuscript/202109.0183/v1):
 Morlion, A.; Hulstaert, E.; Anckaert, J.; Everaert, C.; Vandesompele, J.; Mestdagh, P. CiLiQuant: Quantification of RNA Junction Reads Based on Their Circular or Linear Transcript Origin. Preprints 2021, 2021090183. doi: 10.20944/preprints202109.0183.v1
 
-Feel free ask questions/inform about issues in the [issues section](https://github.com/OncoRNALab/CiLiQuant/issues)
+Feel free to ask questions/inform about issues in the [issues section](https://github.com/OncoRNALab/CiLiQuant/issues)
 
 # CiLiQuant.py
 
