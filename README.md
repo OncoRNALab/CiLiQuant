@@ -19,7 +19,7 @@ The following libraries are required:
 To use this tool, you can simply download the CiLiQuant.py script or clone the repository using the command line:
 ```
 git clone https://github.com/OncoRNALab/CiLiQuant.git
-
+```
 
 ## Input
 Each time BED format for first 6 columns (chromosome, start, stop, name, score, strand), but score column may be filled with dots instead of numbers or may already contain the nr of reads
