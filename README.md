@@ -25,7 +25,7 @@ git clone https://github.com/OncoRNALab/CiLiQuant.git
 Each time BED format for first 6 columns (chromosome, start, stop, name, score, strand), but score column may be filled with dots instead of numbers or may already contain the nr of reads
 - a (forward splice) junction file that contains coordinates of junctions and number of junction spanning reads (e.g. STAR's SJ.out.tab or TopHat's junctions.bed)
 - a corresponding backsplice junction file that contains coordinates of backsplice junctions and number of junction spanning reads (e.g. CIRCexplorer or find_circ output)
-- an exon/gene file that contains start and stop positions of the (exons of the) genes of interest
+- an exon or gene file that contains start and stop positions of the (exons of the) genes of interest
 
 ## Run script
 ```
