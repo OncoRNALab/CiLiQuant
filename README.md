@@ -1,19 +1,20 @@
 # General Information
 
-This code was created by Annelien Morlion
-
-Collaborators: Eva Hulstaert, Jasper Anckaert, Celine Everaert, Jo Vandesompele, Pieter Mestdagh
-
-Feel free to provide feedback/inform about issues
-
 If you use this code, please cite our work:
-Morlion, A.; Hulstaert, E.; Anckaert, J.; Everaert, C.; Vandesompele, J.; Mestdagh, P. CiLiQuant: Quantification of RNA Junction Reads Based on Their Circular or Linear Transcript Origin. Preprints 2021, 2021090183 (doi: 10.20944/preprints202109.0183.v1).
+Morlion, A.; Hulstaert, E.; Anckaert, J.; Everaert, C.; Vandesompele, J.; Mestdagh, P. CiLiQuant: Quantification of RNA Junction Reads Based on Their Circular or Linear Transcript Origin. Preprints 2021, 2021090183 [Preprints](https://www.preprints.org/manuscript/202109.0183/v1) (doi: 10.20944/preprints202109.0183.v1)
+
+Feel free ask questions/inform about issues in the [issues section](https://github.com/OncoRNALab/CiLiQuant/issues)
 
 # CiLiQuant.py
 
 This script separates junction reads based on their linear or circular origin (if a forward splice junction falls within another backsplice junction, the circular or linear origin cannot be determined -> ambiguous). Only the non-ambiguous junction reads are used to compare the relative linear and circular transcript abundance. 
 
 Together with the circ fraction (circ/(circ+lin)), a 95% confidence interval is provided.
+
+## Dependencies
+The following libraries are required:
+* Python 3.6
+* Pandas v0.23 [Pandas](https://pandas.pydata.org)
 
 ## Input
 Each time BED format for first 6 columns (chromosome, start, stop, name, score, strand), but score column may be filled with dots instead of numbers or may already contain the nr of reads
@@ -67,7 +68,7 @@ If it really takes too long, you can split the exon file per chromosome and run 
   - (*p_AC_fl, ci_lower_AC_fl, ci_upper_AC_fl*): cf. circ_fraction_fl, here estimated proportion and CI based on modified Wald (Agresti-Coull, 1998; Brown et al, 2001)
   - *lin_reads_gene_av*: average nr of linear only junction reads in gene; see lin_reads_av in CiLiQuant_gene.txt below
   - *circ_fraction_all*: circRNA fraction for circ_id based on its backsplice reads and all linear only junction reads in gene: bs_reads/(bs_reads+lin_reads_gene_av)
-  - (*p_AC_all, ci_lower_AC_all, ci_upper_AC_all*): cf. circ_fraction_all, here estimated proportion and CI based on modified Wald (Agresti-Coull, 1998; Brown et al, 2001)
+  - (*p_AC_all, ci_lower_AC_all, ci_upper_AC_all*): estimated proportion and CI of circ_fraction_all based on modified Wald (Agresti-Coull, 1998; Brown et al, 2001)
 - **CiLiQuant_gene.txt**: a file that for every gene in the exon file shows how much backsplice, linear only and ambiguous reads and junctions there are together with the estimated circRNA fraction for this gene and CI
   - (*linear_reads, linear_junctions*): sum of linear only reads for each gene_id & corresponding nr of unique linear junctions resp.
   - (*ambiguous_reads, ambiguous_junctions*): sum of ambiguous junction reads & corresponding nr of unique ambiguous junctions resp.
@@ -75,4 +76,4 @@ If it really takes too long, you can split the exon file per chromosome and run 
   - *lin_reads_av*: linear only junction reads corrected for nr of linear only junctions
   - *circ_reads_av*: circular (backsplice) only junction reads corrected for nr of circular only junctions
   - *circ_fraction*: circRNA fraction in gene based on average of all backsplice and linear only junction reads in gene: circ_reads_av/(circ_reads_av+lin_reads_av)
-  - (*p_AC, ci_lower_AC, ci_upper_AC*): cf circ_fraction, here estimated proportion and CI based on modified Wald (Agresti-Coull, 1998; Brown et al, 2001)
+  - (*p_AC, ci_lower_AC, ci_upper_AC*): estimated proportion and CI of circ_fraction based on modified Wald (Agresti-Coull, 1998; Brown et al, 2001)
