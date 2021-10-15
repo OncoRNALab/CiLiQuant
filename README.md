@@ -11,10 +11,15 @@ This script separates junction reads based on their linear or circular origin (i
 
 Together with the circ fraction (circ/(circ+lin)), a 95% confidence interval is provided.
 
-## Dependencies
+## Installation & dependencies
 The following libraries are required:
 * [Python](https://www.python.org) 3.6
 * [Pandas](https://pandas.pydata.org) 0.23
+
+To use this tool, you can simply download the CiLiQuant.py script or clone the repository using the command line:
+```
+git clone https://github.com/OncoRNALab/CiLiQuant.git
+
 
 ## Input
 Each time BED format for first 6 columns (chromosome, start, stop, name, score, strand), but score column may be filled with dots instead of numbers or may already contain the nr of reads
