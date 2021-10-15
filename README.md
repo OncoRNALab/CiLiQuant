@@ -14,7 +14,7 @@ Together with the circ fraction (circ/(circ+lin)), a 95% confidence interval is 
 ## Installation & dependencies
 The following libraries are required:
 * [Python](https://www.python.org) 3.6
-* [Pandas](https://pandas.pydata.org) 0.23
+* [Pandas](https://pandas.pydata.org) 1.0
 
 To use this tool, you can simply download the CiLiQuant.py script or clone the repository using the command line:
 ```
