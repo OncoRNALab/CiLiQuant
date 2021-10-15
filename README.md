@@ -13,8 +13,8 @@ Together with the circ fraction (circ/(circ+lin)), a 95% confidence interval is 
 
 ## Dependencies
 The following libraries are required:
-* Python 3.6
-* Pandas v0.23 [Pandas](https://pandas.pydata.org)
+* [Python](https://www.python.org) 3.6
+* [Pandas](https://pandas.pydata.org) 0.23
 
 ## Input
 Each time BED format for first 6 columns (chromosome, start, stop, name, score, strand), but score column may be filled with dots instead of numbers or may already contain the nr of reads
