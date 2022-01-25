@@ -262,6 +262,8 @@ def splitread(junctions, backsplice_junctions, exons):
 		output_df_ci_flnonfl = nonflankcirclevelfraction(output_df_ci, output_df2_ci) #calculate fraction and ci based on all linear only junction reads
 		output_df_ci_flnonfl["lfl_reads"] = output_df_ci_flnonfl.apply(lambda row: label_lflank(row), axis=1)
 		output_df_ci_flnonfl["rfl_reads"] = output_df_ci_flnonfl.apply(lambda row: label_rflank(row), axis=1)
+	else: #just return the empty df at bs level
+                output_df_ci_flnonfl = output_df
 	return (output_df_ci_flnonfl, output_df2_ci, output_fwjunctions)
 
 if __name__ == '__main__':
