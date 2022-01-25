@@ -21,6 +21,7 @@ def readjunctions(filename, fw_col, overlap_col):
 	junctions = junctions[(junctions['start']>0) & (junctions['stop']>0)]
 	junctions['start']=junctions['start'].astype('int') #start of junction (or of leftmost read that contains the junction)
 	junctions['stop']=junctions['stop'].astype('int') #stop of junction (or of rightmost read that contains the junction)
+	junctions['name']=junctions['chromosome'].astype('str') + '_' + junctions['start'].astype('str') + '_' + junctions['stop'].astype('str') + "_" + junctions['strand'].astype('str') #make a unique name
 	junctions['reads']=junctions['reads'].astype('int') #number of reads that contain the junction
 	return junctions
 
@@ -297,4 +298,4 @@ if __name__ == '__main__':
 	
 	output_circ.to_csv(outputdir +"/"+ nameprefix + "CiLiQuant_circ.txt",sep="\t",index=False)
 	output_gene.to_csv(outputdir +"/"+ nameprefix + "CiLiQuant_gene.txt",sep="\t",index=False)
-	#output_fwjunctions.to_csv(outputdir +"/"+ nameprefix + "LinCircSplit_FWjunctions.bed",sep="\t",index=False)
+	#output_fwjunctions.to_csv(outputdir +"/"+ nameprefix + "CiLiQuant_FWjunctions.bed",sep="\t",index=False)
