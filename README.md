@@ -32,34 +32,35 @@ Note that if you want to exclude junction reads with low counts for the circular
 ## Run script
 ```
 Python3 CiLiQuant.py --help                                                                       
-usage: CiLiQuant.py [-h] -j JUNCTIONS [-v OVERLAP_COLUMN] -b BACKSPLICE -e
-                      EXONS [-o OUTPUT] [-n NAME_PREFIX] -bc BSREADS_COLUMN
-                      -fc FSREADS_COLUMN
+usage: CiLiQuant.py [-h] -j JUNCTIONS -b BACKSPLICE -e EXONS -bc BSREADS_COLUMN -fc FSREADS_COLUMN [-v OVERLAP_COLUMN] [-o OUTPUT]
+                    [-n NAME_PREFIX] [-ff FSFILTER] [-bf BSFILTER] [-s {yes,no}]
 
 optional arguments:
   -h, --help            show this help message and exit
   -j JUNCTIONS, --junctions JUNCTIONS
                         Normal (forward) junction file (BED format)
-  -v OVERLAP_COLUMN, --overlap_column OVERLAP_COLUMN
-                        In case the start and stop columns contain the max
-                        spanning read positions instead of exact sites,
-                        indicate which column contains overlap at left and
-                        right side of junction (e.g. column 11 in TopHat
-                        junction file, not needed in STAR junction file)
   -b BACKSPLICE, --backsplice BACKSPLICE
                         Backsplice junction file (BED format)
   -e EXONS, --exons EXONS
                         Exon or gene file (BED format)
+  -bc BSREADS_COLUMN, --bsreads_column BSREADS_COLUMN
+                        Column in backsplice junction file that contains the number of junction reads
+  -fc FSREADS_COLUMN, --fsreads_column FSREADS_COLUMN
+                        Column in forward junction file that contains the number of junction reads
+  -v OVERLAP_COLUMN, --overlap_column OVERLAP_COLUMN
+                        In case the start and stop columns contain the max spanning read positions instead of exact sites, indicate which
+                        column contains overlap at left and right side of junction (e.g. column 11 in TopHat junction file, not needed in
+                        STAR junction file)
   -o OUTPUT, --output OUTPUT
                         Optional output directory
   -n NAME_PREFIX, --name_prefix NAME_PREFIX
                         Optional pefix (e.g. sample name) for output files
-  -bc BSREADS_COLUMN, --bsreads_column BSREADS_COLUMN
-                        Column in backsplice junction file that contains the
-                        number of junction reads
-  -fc FSREADS_COLUMN, --fsreads_column FSREADS_COLUMN
-                        Column in forward junction file that contains the
-                        number of junction reads
+  -ff FSFILTER, --fsfilter FSFILTER
+                        Filter out forward junctions with less reads than this filter (default=1)
+  -bf BSFILTER, --bsfilter BSFILTER
+                        Filter out backsplice junctions with less reads than this filter (default=1)
+  -s {yes,no}, --strand {yes,no}
+                        Run in strand-specific mode or not? (default=yes)
 ```
 Remark: A long exon file will require more time to process.
 If it really takes too long, you can split the exon file per chromosome and run the script on the exon file subsets (no need to split the forward splice and backsplice junction files - the script will only use the junctions that are between the exon file boundaries).
