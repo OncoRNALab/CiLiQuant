@@ -24,7 +24,7 @@ git clone https://github.com/OncoRNALab/CiLiQuant.git
 ## Input
 Each time BED-format for first 6 columns (chromosome, start, stop, name, score, strand), but score column may be filled with dots instead of numbers or may already contain the nr of reads
 - a (forward-splice) junction file that contains coordinates of junctions and number of junction spanning reads (e.g. TopHat's junctions.bed or STAR's SJ.out.tab)
-  - Note that the column order of STAR's SJ.out.tab needs to change for BED-format. Also the strand information formatting needs to be consistent with the back-splice and exon or gene file. This can be changed with:
+  - Note that STAR's SJ.out.tab is not in BED-format and make sure the strand information (1/2) formatting is consistent with that in the back-splice and exon or gene file (+/-). This can be changed with:
     ```awk 'BEGIN {OFS="\t"} { if ($4 == 1) { $4 = "+" } else if ($4 == 2) { $4 = "-" } print $1,$2,$3,".",".",$4,$7 }' SJ.out.tab > SJ.out.tab.reordered ```
 - a corresponding back-splice junction file that contains coordinates of backsplice junctions and number of junction spanning reads (e.g. CIRCexplorer or find_circ output)
 - an exon or gene file that contains start and stop positions of the (exons of the) genes of interest. Note that fractions will only be calculated for circRNAs that can be assigned to these genes of interest.
